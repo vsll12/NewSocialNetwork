@@ -28,7 +28,9 @@ namespace SocialNetwork1.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
             ViewBag.User = user;
+
             return View();
         }
 

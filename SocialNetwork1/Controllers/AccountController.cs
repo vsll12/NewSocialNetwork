@@ -53,6 +53,7 @@ namespace SocialNetwork1.Controllers
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
                 if(result.Succeeded)
                 {
                     if(!await _roleManager.RoleExistsAsync("Admin"))
@@ -63,6 +64,7 @@ namespace SocialNetwork1.Controllers
                         };
 
                         IdentityResult roleResult = await _roleManager.CreateAsync(role);
+
                         if (!roleResult.Succeeded)
                         {
                             return View(model);
@@ -90,9 +92,11 @@ namespace SocialNetwork1.Controllers
             if(ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+
                 if (result.Succeeded)
                 {
-                    var user =await _context.Users.SingleOrDefaultAsync(u => u.UserName == model.Username);
+                    var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == model.Username);
+
                     if (user != null)
                     {
                         user.ConnectTime=DateTime.Now.ToLongDateString()+" "+DateTime.Now.ToShortDateString();
@@ -111,6 +115,7 @@ namespace SocialNetwork1.Controllers
         public async Task<IActionResult> LogOut()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
             if(user != null)
             {
                 user.DisconnectTime = DateTime.Now;
